@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kenangan Kelas VIII - Versi Desktop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark:      #0B132B;
+      --light:     #1C2541;
+      --gold:      #D4AF37;
+      --goldlight: #F4D03F;
+      --white:     #ffffff;
+      --gray:      #676f7c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    .handwriting { font-family: 'Dancing Script', cursive; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 15px rgba(212,175,55,.5)); } 50% { filter: drop-shadow(0 0 30px rgba(212,175,55,.8)); } }
+
+    .anim-fadein { animation: fadeIn 0.8s ease-out forwards; }
+
+    /* ========= NAVBAR ========= */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 1rem 1.5rem;
+      background: rgba(11,19,43,.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+
+    .nav-inner {
+      max-width: 1400px; margin: auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--gold);
+    }
+
+    .nav-buttons {
+      display: flex; gap: 1rem;
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      background: rgba(212,175,55,.1);
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .nav-btn:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    /* ========= MAIN CONTAINER ========= */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      margin-top: 70px;
+    }
+
+    /* ========= LAYOUT ========= */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ========= SIGNATURE INPUT ========= */
+    #sig-section {
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(28,37,65,.8) 0%, rgba(20,30,55,.9) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(212,175,55,.2);
+    }
+
+    .sig-section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+      text-align: center;
+    }
+
+    .sig-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group input {
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(212,175,55,.2);
+      background: rgba(255,255,255,.05);
+      color: var(--white);
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      background: rgba(255,255,255,.08);
+      border-color: rgba(212,175,55,.5);
+      box-shadow: 0 0 20px rgba(212,175,55,.2);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255,255,255,.3);
+    }
+
+    /* Canvas Styling */
+    .canvas-wrap {
+      border: 2px dashed rgba(212,175,55,.3);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,.3);
+      position: relative;
+      aspect-ratio: 16 / 9;
+    }
+
+    #sig-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      background: rgba(11,19,43,.5);
+    }
+
+    .canvas-hint {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(255,255,255,.2);
+      font-size: 1.1rem;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    /* Buttons */
+    .sig-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.9rem 1.8rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-save {
+      background: var(--gold);
+      color: var(--dark);
+      grid-column: 1 / -1;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212,175,55,.4);
+    }
+
+    .btn-clear {
+      background: rgba(212,175,55,.1);
+      color: var(--gold);
+      border: 1px solid rgba(212,175,55,.2);
+    }
+
+    .btn-clear:hover {
+      background: rgba(212,175,55,.2);
+    }
+
+    /* ========= SIGNATURES DISPLAY ========= */
+    #sigs-section {
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(28,37,65,.8) 0%, rgba(20,30,55,.9) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(212,175,55,.2);
+      grid-column: 1 / -1;
+    }
+
+    .sigs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .sigs-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .sigs-count {
+      background: rgba(212,175,55,.1);
+      color: var(--gold);
+      padding: 0.6rem 1.5rem;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    #sigs-empty {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    #sigs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .sig-item {
+      background: rgba(11,19,43,.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(212,175,55,.2);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .sig-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(212,175,55,.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .sig-item:hover {
+      transform: translateY(-8px);
+      border-color: rgba(212,175,55,.5);
+      box-shadow: 0 20px 40px rgba(212,175,55,.15);
+    }
+
+    .sig-item:hover::before {
+      opacity: 1;
+    }
+
+    .sig-item-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sig-item-img {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,.3);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sig-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .sig-item-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      word-break: break-word;
+    }
+
+    .sig-item-date {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 0.8rem;
+    }
+
+    .sig-item-delete {
+      width: 100%;
+      padding: 0.5rem;
+      border: none;
+      background: rgba(239,68,68,.1);
+      color: #ef4444;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .sig-item-delete:hover {
+      background: rgba(239,68,68,.3);
+    }
+
+    /* Success Overlay */
+    #sig-saved-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(11,19,43,.95);
+      backdrop-filter: blur(20px);
+      padding: 3rem;
+      border-radius: 16px;
+      border: 1px solid rgba(212,175,55,.3);
+      text-align: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #sig-saved-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .overlay-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">Kenangan ✦</div>
+      <div class="nav-buttons">
+        <a href="hp.html" class="nav-btn">📱 Versi HP</a>
+        <a href="index.html" class="nav-btn">← Kembali</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="main-grid">
+      <!-- SIGNATURE INPUT -->
+      <section id="sig-section">
+        <div class="sig-section-title">Tulis Tanda Tangan Anda</div>
+
+        <div class="sig-form">
+          <div class="form-group">
+            <label for="sig-name">Nama Lengkap</label>
+            <input type="text" id="sig-name" placeholder="Masukkan nama Anda" />
+          </div>
+
+          <div class="form-group">
+            <label>Tanda Tangan</label>
+            <div class="canvas-wrap">
+              <canvas id="sig-canvas"></canvas>
+              <div class="canvas-hint">Tanda tangan di sini</div>
+            </div>
+          </div>
+
+          <div class="sig-buttons">
+            <button class="btn btn-clear" id="sig-clear">🗑️ Hapus</button>
+            <button class="btn btn-save" id="sig-save">✓ Simpan Tanda Tangan</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK STATS -->
+      <div style="display: flex; flex-direction: column; justify-content: flex-start; gap: 2rem;">
+        <div style="background: linear-gradient(135deg, rgba(28,37,65,.8) 0%, rgba(20,30,55,.9) 100%); border-radius: 16px; border: 1px solid rgba(212,175,55,.2); padding: 2rem; text-align: center;">
+          <div style="font-size: 2.5rem; color: var(--gold); font-weight: 700; margin-bottom: 0.5rem;" id="quick-count">0</div>
+          <div style="color: var(--gray); font-size: 1rem;">Tanda Tangan Tersimpan</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(59,130,246,.1) 0%, rgba(30,58,138,.15) 100%); border-radius: 16px; border: 1px solid rgba(59,130,246,.2); padding: 2rem;">
+          <div style="color: #3b82f6; font-weight: 600; margin-bottom: 1rem;">ℹ️ Sinkronisasi Otomatis</div>
+          <div style="color: var(--gray); font-size: 0.9rem; line-height: 1.6;">
+            Semua tanda tangan Anda otomatis tersimpan dan tersinkronisasi antar perangkat. Data akan tetap aman bahkan jika Anda melakukan refresh halaman.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNATURES DISPLAY -->
+    <section id="sigs-section">
+      <div class="sigs-header">
+        <div class="sigs-title">📝 Buku Tanda Tangan</div>
+        <div class="sigs-count" id="sig-count">0 Tanda Tangan</div>
+      </div>
+      <div id="sigs-empty">Belum ada tanda tangan. Mulai tulis di sebelah!</div>
+      <div id="sigs-grid"></div>
+    </section>
+  </div>
+
+  <!-- SUCCESS OVERLAY -->
+  <div id="sig-saved-overlay">
+    <div class="overlay-icon">✨</div>
+    <div class="overlay-text">Tanda Tangan Disimpan!</div>
+  </div>
+
+  <script>
+    // ====== Shared Signature Management ======
+    const STORAGE_KEY = 'kenangan_signatures_v1';
+    const STORAGE_EVENT = 'kenangan_signatures_updated';
+
+    class SignatureManager {
+      constructor() {
+        this.signatures = this.loadSignatures();
+        this.initializeListeners();
+        this.setupStorageSync();
+      }
+
+      loadSignatures() {
+        try {
+          const data = localStorage.getItem(STORAGE_KEY);
+          return data ? JSON.parse(data) : [];
+        } catch (error) {
+          console.error('Error loading signatures:', error);
+          return [];
+        }
+      }
+
+      saveSignatures() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.signatures));
+          // Trigger storage event
+          window.dispatchEvent(new CustomEvent(STORAGE_EVENT, { 
+            detail: { signatures: this.signatures } 
+          }));
+        } catch (error) {
+          console.error('Error saving signatures:', error);
+          alert('Gagal menyimpan data!');
+        }
+      }
+
+      addSignature(name, imageData, date) {
+        this.signatures.unshift({ id: Date.now(), name, imageData, date });
+        this.saveSignatures();
+      }
+
+      deleteSignature(id) {
+        this.signatures = this.signatures.filter(sig => sig.id !== id);
+        this.saveSignatures();
+      }
+
+      initializeListeners() {
+        window.addEventListener(STORAGE_EVENT, (e) => {
+          this.signatures = e.detail.signatures;
+          this.renderSignatures();
+          this.updateCount();
+        });
+      }
+
+      setupStorageSync() {
+        // Listen for storage changes from other tabs
+        window.addEventListener('storage', (e) => {
+          if (e.key === STORAGE_KEY) {
+            this.signatures = JSON.parse(e.newValue || '[]');
+            this.renderSignatures();
+            this.updateCount();
+          }
+        });
+      }
+
+      renderSignatures() {
+        const grid = document.getElementById('sigs-grid');
+        const empty = document.getElementById('sigs-empty');
+
+        if (this.signatures.length === 0) {
+          grid.innerHTML = '';
+          empty.style.display = 'block';
+          return;
+        }
+
+        empty.style.display = 'none';
+        grid.innerHTML = this.signatures.map(sig => `
+          <div class="sig-item">
+            <div class="sig-item-content">
+              <div class="sig-item-img">
+                <img src="${sig.imageData}" alt="${sig.name}" />
+              </div>
+              <div class="sig-item-name handwriting">${sig.name}</div>
+              <div class="sig-item-date">${sig.date}</div>
+              <button class="sig-item-delete" data-id="${sig.id}">🗑️ Hapus</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Attach delete handlers
+        grid.querySelectorAll('.sig-item-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            if (confirm('Yakin ingin menghapus tanda tangan ini?')) {
+              this.deleteSignature(id);
+              this.renderSignatures();
+              this.updateCount();
+            }
+          });
+        });
+      }
+
+      updateCount() {
+        const count = this.signatures.length;
+        document.getElementById('sig-count').textContent = `${count} Tanda Tangan`;
+        document.getElementById('quick-count').textContent = count;
+      }
+    }
+
+    // ====== Canvas Signature Drawing ======
+    class SignatureCanvas {
+      constructor(canvasId, nameInputId, saveButtonId, clearButtonId, overlayId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.nameInput = document.getElementById(nameInputId);
+        this.saveButton = document.getElementById(saveButtonId);
+        this.clearButton = document.getElementById(clearButtonId);
+        this.overlay = document.getElementById(overlayId);
+        this.drawing = false;
+        this.manager = new SignatureManager();
+
+        this.setupCanvas();
+        this.attachEventListeners();
+        this.renderInitialSignatures();
+      }
+
+      setupCanvas() {
+        const rect = this.canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        this.ctx.scale(dpr, dpr);
+        
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.strokeStyle = '#D4AF37';
+        this.ctx.lineWidth = 3;
+      }
+
+      coords(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const src = e.touches ? e.touches[0] : e;
+        return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+      }
+
+      attachEventListeners() {
+        this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+        this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+        this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+        this.canvas.addEventListener('mouseleave', () => this.stopDrawing());
+
+        this.canvas.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.startDrawing(e);
+        }, { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+          this.draw(e);
+        }, { passive: false });
+        this.canvas.addEventListener('touchend', () => this.stopDrawing());
+
+        this.clearButton.addEventListener('click', () => this.clearCanvas());
+        this.saveButton.addEventListener('click', () => this.saveSignature());
+      }
+
+      startDrawing(e) {
+        this.drawing = true;
+        this.ctx.beginPath();
+        const { x, y } = this.coords(e);
+        this.ctx.moveTo(x, y);
+      }
+
+      draw(e) {
+        if (!this.drawing) return;
+        const { x, y } = this.coords(e);
+        this.ctx.lineTo(x, y);
+        this.ctx.stroke();
+      }
+
+      stopDrawing() {
+        this.drawing = false;
+      }
+
+      clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.overlay.classList.remove('show');
+      }
+
+      saveSignature() {
+        const name = this.nameInput.value.trim();
+        if (!name) {
+          alert('Tulis nama dulu!');
+          return;
+        }
+
+        const imageData = this.canvas.toDataURL('image/png');
+        
+        if (imageData === 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==') {
+          alert('Tanda tangan dulu ya!');
+          return;
+        }
+
+        const date = new Date().toLocaleDateString('id-ID', { 
+          day: 'numeric', 
+          month: 'short', 
+          year: 'numeric' 
+        });
+
+        this.manager.addSignature(name, imageData, date);
+        
+        this.overlay.classList.add('show');
+        this.nameInput.value = '';
+        this.manager.renderSignatures();
+        this.manager.updateCount();
+        
+        setTimeout(() => this.clearCanvas(), 2000);
+      }
+
+      renderInitialSignatures() {
+        this.manager.renderSignatures();
+        this.manager.updateCount();
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      new SignatureCanvas('sig-canvas', 'sig-name', 'sig-save', 'sig-clear', 'sig-saved-overlay');
+    });
+  </script>
+
+</body>
+</html>

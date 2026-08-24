@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <title>Kenangan Kelas VIII</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --dark:#0B132B;--light:#1C2541;--panel:#13203a;
+      --gold:#D4AF37;--goldl:#F4D03F;--goldd:#8B6914;
+      --white:#fff;--gray:#8b95a8;
+      --safe:env(safe-area-inset-bottom,0px);
+      --r:1.25rem;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+    body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.6;padding-bottom:calc(64px + var(--safe))}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{font-family:inherit;cursor:pointer}
+    ::selection{background:var(--gold);color:var(--dark)}
+    ::-webkit-scrollbar{display:none}
+
+    /* ─── KEYFRAMES ─────────────────────────────────── */
+    @keyframes fadeUp {from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn {from{opacity:0}to{opacity:1}}
+    @keyframes float  {0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+    @keyframes glow   {0%,100%{filter:drop-shadow(0 0 10px rgba(212,175,55,.5))}50%{filter:drop-shadow(0 0 26px rgba(212,175,55,.9))}}
+    @keyframes beat   {0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    @keyframes pulse  {0%,100%{opacity:1}50%{opacity:.35}}
+    @keyframes spin   {to{transform:rotate(360deg)}}
+    @keyframes bars1  {0%,100%{height:7px}50%{height:19px}}
+    @keyframes bars2  {0%,100%{height:13px}50%{height:5px}}
+    @keyframes bars3  {0%,100%{height:9px}50%{height:21px}}
+    @keyframes bars4  {0%,100%{height:15px}50%{height:7px}}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-25px) scale(1.05)}66%{transform:translate(-15px,15px) scale(.96)}}
+
+    /* ─── SCROLL FADE 3D ─────────────────────────────── */
+    @keyframes reveal3d{
+      from{opacity:0;transform:perspective(900px) rotateX(14deg) translateY(32px) scale(.97)}
+      to{opacity:1;transform:perspective(900px) rotateX(0) translateY(0) scale(1)}
+    }
+    .fade{opacity:0;transform:perspective(900px) rotateX(14deg) translateY(32px) scale(.97);transform-origin:50% 100%;will-change:transform,opacity}
+    .fade.visible{opacity:1;transform:none;animation:reveal3d .85s cubic-bezier(.16,.84,.3,1) backwards}
+    @media (prefers-reduced-motion:reduce){
+      .fade{opacity:1;transform:none}
+      .fade.visible{animation:none}
+    }
+    .fade-l{opacity:0;transform:translateX(-22px);transition:opacity .65s ease,transform .65s ease}
+    .fade-l.visible{opacity:1;transform:translateX(0)}
+    .fade-r{opacity:0;transform:translateX(22px);transition:opacity .65s ease,transform .65s ease}
+    .fade-r.visible{opacity:1;transform:translateX(0)}
+
+    /* ─── GLASS ──────────────────────────────────────── */
+    .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.06)}
+    .glass-g{background:rgba(20,30,55,.78);backdrop-filter:blur(18px);border:1px solid rgba(212,175,55,.18)}
+
+    /* ─── NAVBAR ─────────────────────────────────────── */
+    #nav{
+      position:fixed;top:0;left:0;right:0;z-index:60;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.85rem 1.25rem;
+      transition:background .4s,box-shadow .4s;
+    }
+    #nav.scrolled{background:rgba(11,19,43,.92);backdrop-filter:blur(22px);box-shadow:0 4px 24px rgba(0,0,0,.55)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:900;color:var(--gold);letter-spacing:-.03em}
+    .nav-back{
+      padding:.38rem .9rem;border-radius:99px;
+      border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.07);
+      color:var(--gold);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+      transition:background .25s;
+    }
+    .nav-back:active{background:rgba(212,175,55,.2)}
+    #prog{position:absolute;bottom:0;left:0;height:2px;background:var(--gold);box-shadow:0 0 8px var(--gold);width:0;transition:width .1s linear}
+
+    /* ─── HERO ───────────────────────────────────────── */
+    #hero{
+      min-height:100svh;position:relative;overflow:hidden;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+      padding:0 0 4rem;
+      perspective:1000px;
+    }
+    #hero-bg{position:absolute;inset:0;z-index:0}
+    #hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.35;transform:scale(1.05);transition:transform 8s ease-out}
+    #hero-bg.loaded img{transform:scale(1)}
+    #hero-bg .ov{
+      position:absolute;inset:0;
+      background:linear-gradient(170deg,rgba(11,19,43,.2) 0%,rgba(11,19,43,.5) 40%,rgba(11,19,43,.95) 75%,#0B132B 100%);
+    }
+    .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+    .hero-orb1{width:280px;height:280px;background:rgba(212,175,55,.17);top:8%;left:-12%;animation:orbFloat 9s ease-in-out infinite}
+    .hero-orb2{width:220px;height:220px;background:rgba(59,130,246,.13);bottom:30%;right:-8%;animation:orbFloat 11s ease-in-out 4s infinite}
+    .hero-orb3{width:160px;height:160px;background:rgba(212,175,55,.1);top:40%;right:10%;animation:orbFloat 7s ease-in-out 2s infinite}
+
+    /* Floating photo grid inside hero */
+    .hero-photos{
+      position:absolute;top:0;left:0;right:0;bottom:0;z-index:1;pointer-events:none;overflow:hidden;
+    }
+    .hp{
+      position:absolute;border-radius:.75rem;overflow:hidden;
+      border:2px solid rgba(212,175,55,.25);box-shadow:0 8px 32px rgba(0,0,0,.5);
+      opacity:.55;
+    }
+    .hp img{width:100%;height:100%;object-fit:cover}
+    .hp1{width:90px;height:120px;top:14%;left:5%;transform:rotate(-8deg);animation:float 7s ease-in-out infinite}
+    .hp2{width:80px;height:105px;top:12%;right:7%;transform:rotate(6deg);animation:float 8s ease-in-out 2s infinite}
+    .hp3{width:70px;height:95px;top:38%;right:4%;transform:rotate(-4deg);animation:float 6s ease-in-out 4s infinite}
+
+    #hero-content{position:relative;z-index:10;text-align:center;padding:0 1.5rem;width:100%;will-change:transform,opacity}
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.35rem 1.1rem;border-radius:99px;
+      border:1px solid rgba(212,175,55,.35);background:rgba(212,175,55,.09);
+      font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+      margin-bottom:1.25rem;animation:fadeUp .7s ease both;
+    }
+    .hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+    .hero-title{margin-bottom:.75rem}
+    .hero-title-out{
+      display:block;font-family:'Playfair Display',serif;
+      font-size:clamp(2.8rem,13vw,5.5rem);font-weight:900;line-height:.9;
+      color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.18);
+      animation:fadeUp .7s .1s ease both;
+    }
+    .hero-title-main{
+      display:block;font-family:'Playfair Display',serif;
+      font-size:clamp(2.8rem,13vw,5.5rem);font-weight:900;line-height:.9;
+      background:linear-gradient(130deg,#fff 0%,var(--gold) 45%,#c8991d 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      animation:fadeUp .7s .15s ease both,glow 3s 1s ease-in-out infinite;
+    }
+    .hero-sub{
+      font-size:.88rem;color:var(--gray);max-width:300px;margin:.8rem auto 1.75rem;
+      font-weight:300;animation:fadeUp .7s .25s ease both;
+    }
+    .hero-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+    .hero-btn{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.85rem 1.75rem;border-radius:99px;background:var(--gold);color:var(--dark);
+      font-size:.9rem;font-weight:700;border:none;
+      box-shadow:0 0 24px rgba(212,175,55,.45);transition:transform .2s,box-shadow .2s;
+    }
+    .hero-btn:active{transform:scale(.95)}
+    .hero-btn-ghost{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.85rem 1.75rem;border-radius:99px;
+      border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.07);color:var(--gold);
+      font-size:.9rem;font-weight:700;transition:background .2s;
+    }
+    .hero-btn-ghost:active{background:rgba(212,175,55,.18)}
+
+    /* scroll indicator */
+    .scroll-hint{
+      position:absolute;bottom:1.25rem;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:.35rem;z-index:10;
+    }
+    .scroll-hint-txt{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+    .scroll-ch{width:20px;height:32px;border:1.5px solid rgba(212,175,55,.35);border-radius:10px;display:flex;justify-content:center;padding-top:5px}
+    .scroll-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:float 1.4s ease-in-out infinite}
+
+    /* ─── MARQUEE ────────────────────────────────────── */
+    .marquee-wrap{
+      overflow:hidden;background:var(--gold);
+      padding:.6rem 0;border-top:3px solid var(--dark);border-bottom:3px solid var(--dark);
+      transform:rotate(-1.8deg) scaleX(1.04);position:relative;z-index:20;
+      box-shadow:0 0 24px rgba(212,175,55,.35);margin:-2px 0;
+    }
+    .marquee-track{display:flex;width:max-content;animation:marquee 16s linear infinite;white-space:nowrap}
+    .marquee-track span{display:inline-block;padding-right:2.5rem;font-size:1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--dark)}
+
+    /* ─── SECTION BASE ───────────────────────────────── */
+    .section{padding:3.5rem 0}
+    .container{padding:0 1.25rem}
+    .sec-head{margin-bottom:2rem}
+    .sec-eyebrow{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+    .sec-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--gold);border-radius:2px}
+    .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,7.5vw,2.8rem);font-weight:900;line-height:1.1}
+    .sec-sub{color:var(--gray);font-size:.85rem;margin-top:.4rem;line-height:1.6}
+    .gold{color:var(--gold)}
+
+    /* ─── CERITA / PROLOGUE ──────────────────────────── */
+    #cerita{background:var(--dark);padding:4rem 0 3rem}
+    .prologue-kicker{
+      font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .prologue-kicker::before{content:'';flex:1;max-width:30px;height:1px;background:var(--gold)}
+    .prologue-q{font-size:4.5rem;font-family:'Playfair Display',serif;color:rgba(212,175,55,.2);line-height:.8;margin-bottom:.75rem}
+    .prologue-lead{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.4rem,6.5vw,2.2rem);font-weight:900;line-height:1.2;margin-bottom:1rem;
+    }
+    .prologue-text{font-size:.88rem;color:var(--gray);line-height:1.85;margin-bottom:.75rem}
+    /* Decorative pull-quote card */
+    .pull-quote{
+      margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:1rem;
+      background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.04));
+      border-left:3px solid var(--gold);
+    }
+    .pull-quote p{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--gold);line-height:1.6}
+
+    /* ─── STATS ──────────────────────────────────────── */
+    #stats{padding:0 0 3.5rem}
+    /* 2-col bento grid */
+    .bento-stats{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:.75rem}
+    .bento-stats .bstat:nth-child(2){animation-delay:.08s}
+    .bento-stats .bstat:nth-child(3){animation-delay:.16s}
+    .bento-stats .bstat:nth-child(4){animation-delay:.24s}
+    .bstat{
+      border-radius:1.25rem;padding:1.4rem 1rem;text-align:center;
+      background:rgba(20,30,55,.7);backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.05);position:relative;overflow:hidden;
+      transition:transform .25s,border-color .25s;
+    }
+    .bstat:active{transform:scale(.97)}
+    .bstat::after{
+      content:'';position:absolute;top:-40px;right:-40px;
+      width:80px;height:80px;border-radius:50%;
+      background:rgba(212,175,55,.06);pointer-events:none;
+    }
+    .bstat.wide{grid-column:span 2}
+    .bstat-icon{font-size:1.6rem;margin-bottom:.4rem}
+    .bstat-val{font-size:2.4rem;font-weight:900;line-height:1}
+    .bstat-lbl{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:.25rem}
+
+    /* ─── QUOTES ─────────────────────────────────────── */
+    #quotes-section{
+      padding:3rem 0;
+      background:linear-gradient(135deg,var(--light) 0%,rgba(20,30,55,.9) 100%);
+      border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);
+      position:relative;overflow:hidden;
+    }
+    #quotes-section::before{
+      content:'❝';position:absolute;top:-1rem;left:1rem;
+      font-size:8rem;color:rgba(212,175,55,.06);font-family:'Playfair Display',serif;
+      pointer-events:none;line-height:1;
+    }
+    .quote-display{min-height:80px;display:flex;align-items:center;justify-content:center;padding:0 2rem}
+    .quote-text{
+      font-family:'Playfair Display',serif;font-style:italic;
+      font-size:clamp(.95rem,4.2vw,1.35rem);color:var(--gold);text-align:center;line-height:1.55;
+    }
+
+    /* ─── GALERI 3D RING ─────────────────────────────── */
+    #galeri{background:var(--dark);position:relative;overflow:hidden}
+    #galeri::before{
+      content:'';position:absolute;top:16%;left:50%;transform:translateX(-50%);
+      width:340px;height:340px;border-radius:50%;
+      background:rgba(212,175,55,.08);filter:blur(80px);pointer-events:none;
+    }
+    .sec-head.center{text-align:center}
+    .sec-head.center .sec-eyebrow{justify-content:center}
+    .sec-head.center .sec-eyebrow::before{display:none}
+    .ring-scene{
+      position:relative;height:330px;max-width:600px;margin:0 auto;
+      perspective:1100px;perspective-origin:50% 42%;
+      touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .ring-scene.grabbing{cursor:grabbing}
+    .ring-tilt{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(13deg)}
+    .ring{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+    .ring-card{
+      position:absolute;left:50%;top:50%;
+      border-radius:1.1rem;overflow:hidden;
+      background:var(--panel);
+      border:1px solid rgba(212,175,55,.32);
+      box-shadow:0 18px 44px rgba(0,0,0,.55);
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    }
+    .ring-card img{width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-drag:none}
+    .ring-card::after{
+      content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),inset 0 -44px 56px rgba(11,19,43,.55);
+    }
+    .ring-floor{
+      position:absolute;left:50%;bottom:5%;transform:translateX(-50%);
+      width:80%;height:56px;border-radius:50%;pointer-events:none;
+      background:radial-gradient(ellipse at center,rgba(212,175,55,.24),rgba(212,175,55,.05) 45%,transparent 70%);
+      filter:blur(10px);
+    }
+    .ring-cap{
+      text-align:center;margin-top:.5rem;min-height:1.7rem;
+      font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:900;color:var(--gold);
+    }
+    .ring-hint{
+      text-align:center;margin-top:.35rem;padding:0 1.5rem;
+      font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);
+    }
+    .ring-hint .sw{display:inline-block;animation:float 1.6s ease-in-out infinite;color:var(--gold)}
+
+    /* ─── EVENTS — MASONRY-STYLE STACKED ────────────── */
+    #album{background:var(--panel)}
+    /* Horizontal scroll but bigger cards */
+    .events-ribbon{
+      display:flex;gap:1rem;overflow-x:auto;padding:0 1.25rem 1rem;
+      scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    }
+    .ev-card{
+      flex:0 0 78vw;max-width:290px;scroll-snap-align:center;
+      border-radius:1.35rem;overflow:hidden;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      display:flex;flex-direction:column;
+    }
+    .ev-card-img{height:195px;overflow:hidden;position:relative;flex-shrink:0}
+    .ev-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .ev-card:active .ev-card-img img{transform:scale(1.07)}
+    .ev-date-pill{
+      position:absolute;bottom:.6rem;left:.65rem;
+      background:rgba(11,19,43,.88);backdrop-filter:blur(8px);
+      padding:.18rem .65rem;border-radius:99px;
+      font-size:.58rem;font-weight:700;letter-spacing:.08em;color:var(--gold);
+    }
+    .ev-card-body{padding:1.1rem;flex:1}
+    .ev-card-body h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:900;margin-bottom:.4rem;color:var(--gold)}
+    .ev-card-body p{font-size:.8rem;color:var(--gray);line-height:1.6}
+
+    /* ─── STUDENTS — GALLERY STYLE ──── */
+#siswa{
+  background:var(--light);
+  position:relative;
+  overflow:hidden;
+}
+
+.stu-grid{
+  display:flex;
+  gap:1rem;
+  overflow-x:auto;
+  padding:.25rem 0 1rem;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+.stu-card{
+  flex:0 0 78vw;
+  max-width:290px;
+  scroll-snap-align:center;
+
+  border-radius:1.5rem;
+  overflow:hidden;
+
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+
+  transition:.3s;
+}
+
+.stu-card:active{
+  transform:scale(.97);
+}
+
+.stu-cover{
+  position:relative;
+  height:260px;
+  overflow:hidden;
+}
+
+.stu-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.stu-badge{
+  position:absolute;
+  left:.8rem;
+  bottom:.8rem;
+
+  background:rgba(11,19,43,.92);
+
+  color:var(--gold);
+
+  padding:.3rem .9rem;
+  border-radius:999px;
+
+  font-size:.65rem;
+  font-weight:700;
+
+  border:1px solid rgba(212,175,55,.2);
+}
+
+.stu-body{
+  padding:1.2rem;
+}
+
+.stu-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.35rem;
+  font-weight:900;
+  line-height:1.15;
+
+  color:var(--gold);
+
+  margin-bottom:.4rem;
+}
+
+.stu-role{
+  display:block;
+
+  font-size:.65rem;
+  font-weight:700;
+
+  letter-spacing:.15em;
+  text-transform:uppercase;
+
+  color:var(--gold);
+
+  margin-bottom:1rem;
+}
+
+.stu-message{
+  color:var(--gray);
+  line-height:1.7;
+  font-size:.82rem;
+}
+
+.stu-divider{
+  height:1px;
+  background:rgba(255,255,255,.06);
+  margin:1rem 0;
+}
+
+.stu-kesan{
+  color:var(--gray);
+  font-size:.75rem;
+  font-style:italic;
+  line-height:1.6;
+}
+
+    /* ─── TIMELINE — VISUAL CARDS ────────────────────── */
+    #timeline{background:var(--dark)}
+    .tl-cards{display:flex;flex-direction:column;gap:1.25rem}
+    .tl-card{border-radius:1.35rem;overflow:hidden;position:relative}
+    .tl-card-img{height:200px;overflow:hidden;position:relative}
+    .tl-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+    .tl-card:active .tl-card-img img{transform:scale(1.05)}
+    /* gradient overlay fading into content */
+    .tl-card-img::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:55%;
+      background:linear-gradient(to top,var(--dark),transparent);
+    }
+    .tl-card-body{
+      padding:1.25rem;
+      background:linear-gradient(to bottom,var(--panel),rgba(20,30,55,.6));
+      border:1px solid rgba(255,255,255,.06);border-top:0;border-radius:0 0 1.35rem 1.35rem;
+    }
+    .tl-pill{
+      display:inline-flex;align-items:center;gap:.4rem;
+      padding:.2rem .75rem;border-radius:99px;
+      background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);
+      font-size:.62rem;font-weight:700;letter-spacing:.12em;color:var(--gold);
+      margin-bottom:.65rem;
+    }
+    .tl-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:beat 2s ease-in-out infinite}
+    .tl-year-bg{
+      position:absolute;top:.5rem;right:.75rem;
+      font-family:'Playfair Display',serif;font-size:4.5rem;font-weight:900;
+      color:rgba(255,255,255,.04);line-height:1;pointer-events:none;z-index:1;
+    }
+    .tl-title{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;margin-bottom:.4rem}
+    .tl-desc{font-size:.82rem;color:var(--gray);line-height:1.7}
+
+    /* ─── VIDEO ──────────────────────────────────────── */
+    #video{background:var(--panel)}
+    .video-wrap{
+      border-radius:1.35rem;overflow:hidden;margin:0 1.25rem;
+      border:1px solid rgba(212,175,55,.18);
+      box-shadow:0 12px 48px rgba(0,0,0,.6);
+    }
+    .video-ratio{position:relative;padding-top:56.25%;background:#000}
+    .video-ratio iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+
+    /* ─── TANDA TANGAN ───────────────────────────────── */
+    #tanda-tangan{background:var(--dark);border-top:1px solid rgba(255,255,255,.04)}
+    .sig-pad-card{border-radius:1.5rem;padding:1.5rem;margin-bottom:1.25rem}
+    .sig-section-icon{
+      width:42px;height:42px;border-radius:50%;
+      background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;margin-bottom:1rem;
+    }
+    .form-label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem}
+    .form-input{
+      width:100%;background:rgba(11,19,43,.5);border:1px solid rgba(255,255,255,.09);
+      border-radius:.75rem;padding:.85rem 1rem;color:var(--white);
+      font-size:1rem;outline:none;transition:border-color .25s;
+      -webkit-appearance:none;appearance:none;
+    }
+    .form-input:focus{border-color:var(--gold)}
+    .canvas-wrap{
+      background:rgba(5,10,25,.8);border-radius:.75rem;
+      border:1px solid rgba(255,255,255,.09);overflow:hidden;
+      touch-action:none;position:relative;
+    }
+    #sig-canvas{display:block;width:100%;height:155px}
+    .sig-saved-ov{
+      display:none;position:absolute;inset:0;
+      background:rgba(11,19,43,.88);backdrop-filter:blur(5px);
+      flex-direction:column;align-items:center;justify-content:center;
+      color:var(--gold);font-weight:700;gap:.4rem;font-size:.9rem;
+    }
+    .sig-saved-ov.show{display:flex}
+    .btn-row{display:flex;gap:.7rem;margin-top:.7rem}
+    .btn{
+      flex:1;display:flex;align-items:center;justify-content:center;gap:.45rem;
+      padding:.82rem;border-radius:.75rem;font-size:.88rem;font-weight:700;
+      transition:transform .15s;-webkit-tap-highlight-color:transparent;border:none;
+    }
+    .btn:active{transform:scale(.95)}
+    .btn-ghost{background:none;border:1px solid rgba(255,255,255,.1);color:var(--gray)}
+    .btn-gold{background:var(--gold);color:var(--dark)}
+    .btn-gold:active{background:var(--goldl)}
+
+    /* Sig board */
+    .sigs-board{border-radius:1.5rem;min-height:160px;padding:1.35rem}
+    .sigs-board-head{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .sigs-board-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900}
+    .sigs-count{
+      font-size:.6rem;font-weight:700;letter-spacing:.1em;
+      background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.25);
+      padding:.18rem .6rem;border-radius:99px;color:var(--gold);
+    }
+    .sigs-empty{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:2.5rem 0;color:rgba(156,163,175,.38);text-align:center;gap:.4rem;font-size:.85rem;
+    }
+    .sigs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+    .sig-item{
+      background:rgba(11,19,43,.5);border-radius:1rem;padding:.85rem;
+      border:1px solid rgba(255,255,255,.05);text-align:center;position:relative;
+      transition:border-color .25s;
+    }
+    .sig-item:active{border-color:rgba(212,175,55,.3)}
+    .sig-item-img{height:65px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem;background:rgba(255,255,255,.03);border-radius:.5rem;padding:.35rem}
+    .sig-item-img img{max-height:100%;max-width:100%;filter:drop-shadow(0 0 3px rgba(212,175,55,.65))}
+    .sig-item-name{font-family:'Dancing Script',cursive;font-size:1.05rem}
+    .sig-item-date{font-size:.52rem;color:rgba(212,175,55,.38);letter-spacing:.08em;text-transform:uppercase;margin-top:.18rem}
+    .sig-del-btn{
+      position:absolute;top:.4rem;right:.4rem;width:19px;height:19px;border-radius:50%;
+      background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.28);
+      color:#f87171;font-size:.5rem;display:flex;align-items:center;justify-content:center;padding:0;
+    }
+
+    /* ─── LIGHTBOX ───────────────────────────────────── */
+    #lightbox{
+      display:none;position:fixed;inset:0;z-index:200;
+      background:rgba(11,19,43,.97);align-items:center;justify-content:center;padding:1rem;
+    }
+    #lightbox.open{display:flex}
+    #lightbox img{max-width:100%;max-height:88vh;border-radius:.85rem}
+    #lb-close{
+      position:absolute;top:1rem;right:1rem;
+      background:rgba(255,255,255,.1);border:none;color:var(--white);
+      width:38px;height:38px;border-radius:50%;font-size:1.1rem;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    /* ─── MUSIC ──────────────────────────────────────── */
+    #music-player{
+      position:fixed;bottom:calc(70px + var(--safe));right:1rem;z-index:100;
+      display:flex;align-items:center;gap:.5rem;
+    }
+    .music-ind{
+      display:none;align-items:center;gap:.2rem;
+      background:rgba(11,19,43,.9);backdrop-filter:blur(12px);
+      padding:.32rem .75rem;border-radius:99px;border:1px solid rgba(212,175,55,.3);
+    }
+    .music-ind.playing{display:flex}
+    .mbar{width:3px;border-radius:99px;background:var(--gold)}
+    .mbar:nth-child(1){animation:bars1 .8s ease-in-out infinite}
+    .mbar:nth-child(2){animation:bars2 1s ease-in-out .2s infinite}
+    .mbar:nth-child(3){animation:bars3 .7s ease-in-out .1s infinite}
+    .mbar:nth-child(4){animation:bars4 .9s ease-in-out .3s infinite}
+    .mlabel{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-left:.3rem}
+    #play-btn{
+      width:48px;height:48px;border-radius:50%;border:none;
+      background:var(--gold);color:var(--dark);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 18px rgba(212,175,55,.55);transition:transform .2s;
+    }
+    #play-btn:active{transform:scale(.9)}
+    #play-btn svg{width:19px;height:19px;fill:currentColor}
+
+    /* ─── BOTTOM NAV ─────────────────────────────────── */
+    #bnav{
+      position:fixed;bottom:0;left:0;right:0;z-index:50;
+      background:rgba(10,18,40,.94);backdrop-filter:blur(22px);
+      border-top:1px solid rgba(255,255,255,.05);
+      display:flex;padding-bottom:var(--safe);
+    }
+    .bni{
+      flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:.55rem .2rem .45rem;gap:.18rem;cursor:pointer;
+      color:rgba(255,255,255,.3);font-size:.5rem;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      transition:color .2s;-webkit-tap-highlight-color:transparent;
+      position:relative;
+    }
+    .bni.active{color:var(--gold)}
+    .bni.active::before{
+      content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+      width:20px;height:2px;background:var(--gold);border-radius:0 0 2px 2px;
+    }
+    .bni-icon{font-size:1.15rem;line-height:1}
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer{background:var(--dark);padding:2.5rem 1.25rem 1.25rem;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
+    .footer-logo{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;opacity:.1;color:var(--white);margin-bottom:.75rem}
+    .footer-div{display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:.6rem}
+    .footer-line{width:24px;height:1px;background:rgba(212,175,55,.4)}
+    .footer-heart{color:var(--gold);font-size:.9rem;animation:beat 1.5s ease-in-out infinite}
+    .footer-txt{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gray)}
+    .footer-copy{font-size:.58rem;color:rgba(156,163,175,.3);margin-top:.3rem}
+
+    /* ─── PORTRAIT SPECIFIC: wider screens get 2-col ── */
+    @media(min-width:420px){
+      .bento-stats{grid-template-columns:repeat(4,1fr)}
+      .bstat.wide{grid-column:span 1}
+      .sigs-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕</button>
+  <img id="lb-img" src="" alt=""/>
+</div>
+
+<!-- MUSIC -->
+<div id="music-player">
+  <div class="music-ind" id="music-ind">
+    <span class="mbar"></span><span class="mbar"></span>
+    <span class="mbar"></span><span class="mbar"></span>
+    <span class="mlabel">Playing</span>
+  </div>
+  <audio id="bg-audio" loop><source src="musik.mp3" type="audio/mpeg"/></audio>
+  <button id="play-btn">
+    <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="pause-icon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+  </button>
+</div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <span class="nav-logo">VIII.</span>
+  <a href="index.html" class="nav-back">← Ganti</a>
+  <div id="prog"></div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div id="hero-bg">
+    <img src="foto/hero-bg.jpg" alt="" onerror="this.src='https://picsum.photos/seed/mbg/800/1200'"/>
+    <div class="ov"></div>
+    <div class="hero-orb hero-orb1"></div>
+    <div class="hero-orb hero-orb2"></div>
+    <div class="hero-orb hero-orb3"></div>
+  </div>
+  <!-- floating photos -->
+  <div class="hero-photos">
+    <div class="hp hp1"><img src="foto/galeri1.jpg" onerror="this.src='https://picsum.photos/seed/hp1/90/120'" alt=""/></div>
+    <div class="hp hp2"><img src="foto/galeri3.jpg" onerror="this.src='https://picsum.photos/seed/hp2/80/105'" alt=""/></div>
+    <div class="hp hp3"><img src="foto/galeri5.jpg" onerror="this.src='https://picsum.photos/seed/hp3/70/95'" alt=""/></div>
+  </div>
+  <div id="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Angkatan 2023</div>
+    <div class="hero-title">
+      <span class="hero-title-out">KENANGAN</span>
+      <span class="hero-title-main">KELAS VIII</span>
+    </div>
+    <p class="hero-sub">Menyimpan cerita, tawa, dan perjalanan bersama.</p>
+    <div class="hero-actions">
+      <a href="#cerita" class="hero-btn">
+        Buka Kenangan
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#tanda-tangan" class="hero-btn-ghost">✍️ TTD</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-ch"><div class="scroll-dot"></div></div>
+    <span class="scroll-hint-txt">Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>KENANGAN KELAS VIII • BERSAMA SELAMANYA • KENANGAN KELAS VIII • BERSAMA SELAMANYA • </span>
+    <span>KENANGAN KELAS VIII • BERSAMA SELAMANYA • KENANGAN KELAS VIII • BERSAMA SELAMANYA • </span>
+  </div>
+</div>
+
+<!-- ═══════════════ CERITA ═══════════════ -->
+<section id="cerita" class="section">
+  <div class="container fade">
+    <p class="prologue-kicker">Tentang Kita</p>
+    <div class="prologue-q">"</div>
+    <p class="prologue-lead">Tiga tahun lalu, kita melangkah masuk dengan <span class="gold" style="font-style:italic">ragu</span>...</p>
+    <p class="prologue-text">Kita adalah sekumpulan orang asing yang dipertemukan oleh takdir di ruang kelas yang sama. Dari canggung menjadi akrab, dari diam menjadi tawa yang paling keras di lorong sekolah.</p>
+    <div class="pull-quote"><p>Halaman ini adalah mesin waktu kita — tempat kembali saat rindu menyapa.</p></div>
+    <p class="prologue-text">Mari kita buka kembali lembaran cerita Kelas VIII.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ STATS ═══════════════ -->
+<section id="stats">
+  <div class="container">
+    <div class="bento-stats">
+      <div class="bstat fade"><div class="bstat-icon">👥</div><div class="bstat-val" data-value="20">0</div><div class="bstat-lbl">Siswa</div></div>
+      <div class="bstat fade"><div class="bstat-icon">📅</div><div class="bstat-val" data-value="10">0</div><div class="bstat-lbl">Kegiatan</div></div>
+      <div class="bstat fade"><div class="bstat-icon">📷</div><div class="bstat-val" data-value="30">0</div><div class="bstat-lbl">Foto</div></div>
+      <div class="bstat fade"><div class="bstat-icon">❤️</div><div class="bstat-val" data-value="1095">0</div><div class="bstat-lbl">Hari</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes-section">
+  <div class="quote-display"><p id="quote-text" class="quote-text"></p></div>
+</section>
+
+<!-- ═══════════════ GALERI 3D RING ═══════════════ -->
+<section id="galeri" class="section">
+  <div class="container sec-head center fade">
+    <p class="sec-eyebrow">Momen Visual</p>
+    <h2 class="sec-title">Galeri <span class="gold">Kenangan</span></h2>
+    <p class="sec-sub">Semua foto terbaik dalam satu ring 3D.</p>
+  </div>
+  <div class="ring-scene fade" id="ring-scene">
+    <div class="ring-tilt">
+      <div class="ring" id="ring"></div>
+    </div>
+    <div class="ring-floor"></div>
+  </div>
+  <div class="ring-cap" id="ring-cap"></div>
+  <p class="ring-hint"><span class="sw">⟵</span>&nbsp;&nbsp;geser ring untuk memutar, atau biarkan berputar sendiri&nbsp;&nbsp;<span class="sw">⟶</span></p>
+</section>
+
+<!-- ═══════════════ EVENTS ═══════════════ -->
+<section id="album" class="section">
+  <div class="container sec-head fade">
+    <p class="sec-eyebrow">Catatan Kegiatan</p>
+    <h2 class="sec-title">Cerita <span class="gold">Kita</span></h2>
+    <p class="sec-sub">Geser untuk menjelajahi setiap kegiatan.</p>
+  </div>
+  <div class="events-ribbon" id="events-ribbon"></div>
+</section>
+
+<!-- ═══════════════ SISWA ═══════════════ -->
+<section id="siswa" class="section">
+  <div class="container sec-head fade">
+    <p class="sec-eyebrow">Yearbook</p>
+    <h2 class="sec-title">Keluarga <span class="gold">Besar</span></h2>
+  </div>
+  <!-- Semua siswa ditampilkan rata, ukuran & gaya kartu sama persis -->
+  <div class="container">
+    <div class="stu-grid" id="stu-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<section id="timeline" class="section">
+  <div class="container sec-head fade">
+    <p class="sec-eyebrow">Perjalanan Kita</p>
+    <h2 class="sec-title">Jejak <span class="gold">Langkah</span></h2>
+  </div>
+  <div class="container">
+    <div class="tl-cards" id="tl-cards"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ VIDEO ═══════════════ -->
+<section id="video" class="section">
+  <div class="container sec-head fade">
+    <p class="sec-eyebrow">Dokumentasi</p>
+    <h2 class="sec-title">Putar <span class="gold">Kembali</span></h2>
+  </div>
+  <div class="video-wrap fade">
+    <div class="video-ratio">
+      <iframe id="vframe" src="" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TANDA TANGAN ═══════════════ -->
+<section id="tanda-tangan" class="section">
+  <div class="container sec-head fade">
+    <p class="sec-eyebrow">Pesan &amp; Kenangan</p>
+    <h2 class="sec-title">Buku <span class="gold">TTD</span></h2>
+    <p class="sec-sub">Tinggalkan jejak tanganmu.</p>
+  </div>
+  <div class="container">
+    <div class="sig-pad-card glass-g fade">
+      <div class="sig-section-icon">✍️</div>
+      <div style="margin-bottom:.85rem">
+        <label class="form-label">Nama Kamu</label>
+        <input id="sig-name" class="form-input" type="text" placeholder="Tulis namamu..." autocomplete="off"/>
+      </div>
+      <div style="margin-bottom:.85rem">
+        <label class="form-label">Goreskan Tanda Tangan</label>
+        <div class="canvas-wrap">
+          <canvas id="sig-canvas"></canvas>
+          <div class="sig-saved-ov" id="sig-ov">✅ Tersimpan!</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="sig-clear">✕ Hapus</button>
+        <button class="btn btn-gold" id="sig-save">💾 Simpan</button>
+      </div>
+    </div>
+    <div class="sigs-board glass fade" style="margin-top:1.25rem">
+      <div class="sigs-board-head">
+        <span class="sigs-board-title">Jejak Teman-Teman</span>
+        <span class="sigs-count" id="sigs-count">0 TTD</span>
+      </div>
+      <div id="sigs-empty" class="sigs-empty">
+        <span style="font-size:2.5rem">✍️</span>
+        <span>Belum ada tanda tangan.</span>
+        <small>Jadilah yang pertama!</small>
+      </div>
+      <div class="sigs-grid" id="sigs-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">VIII</div>
+  <div class="footer-div"><span class="footer-line"></span><span class="footer-heart">♥</span><span class="footer-line"></span></div>
+  <p class="footer-txt">Angkatan 2023</p>
+  <p class="footer-copy">© <span id="fyear"></span> Kenangan Kelas VIII</p>
+</footer>
+
+<!-- BOTTOM NAV -->
+<nav id="bnav">
+  <div class="bni active" onclick="navTo('#cerita',this)"><span class="bni-icon">📖</span>Cerita</div>
+  <div class="bni" onclick="navTo('#galeri',this)"><span class="bni-icon">📷</span>Galeri</div>
+  <div class="bni" onclick="navTo('#siswa',this)"><span class="bni-icon">👥</span>Siswa</div>
+  <div class="bni" onclick="navTo('#timeline',this)"><span class="bni-icon">🗓️</span>Jejak</div>
+  <div class="bni" onclick="navTo('#tanda-tangan',this)"><span class="bni-icon">✍️</span>TTD</div>
+</nav>
+
+<!-- ═══════════════ DATA (shared dengan desktop) ═══════════════ -->
+<script src="data.js"></script>
+
+<!-- ═══════════════ JS ═══════════════ -->
+<script>
+const $ = id => document.getElementById(id);
+const imgSrc = (el, src, fb) => { el.src = src; el.onerror = () => { el.src = fb; el.onerror = null; }; };
+
+// ── Hero bg parallax-ish load ─────────────────────────────────
+$('hero-bg').classList.add('loaded');
+
+// ── Gallery 3D ring ───────────────────────────────────────────
+(function() {
+  const scene = $('ring-scene'), ring = $('ring'), capEl = $('ring-cap');
+  const N = GALLERY.length, STEP = 360 / N;
+
+  const cards = GALLERY.map((g, i) => {
+    const d = document.createElement('div');
+    d.className = 'ring-card'; d.dataset.i = i;
+    const img = document.createElement('img');
+    imgSrc(img, g.src, g.fb);
+    img.alt = g.cap; img.draggable = false;
+    d.appendChild(img);
+    ring.appendChild(d);
+    return d;
+  });
+
+  let R = 220;
+  function layout() {
+    const cw = Math.round(Math.min(148, Math.max(102, scene.clientWidth * .36)));
+    const ch = Math.round(cw * 1.32);
+    R = Math.round(cw / 2 / Math.tan(Math.PI / N)) + 24;
+    cards.forEach((el, i) => {
+      el.style.width = cw + 'px'; el.style.height = ch + 'px';
+      el.style.margin = (-ch / 2) + 'px 0 0 ' + (-cw / 2) + 'px';
+      el.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)';
+    });
+  }
+  layout();
+  addEventListener('resize', layout);
+
+  let angle = 20, vel = 0, drag = false, lastX = 0, moved = 0, inView = false;
+  new IntersectionObserver(es => { inView = es[0].isIntersecting; }, { rootMargin: '120px' }).observe(scene);
+
+  scene.addEventListener('pointerdown', e => {
+    drag = true; moved = 0; lastX = e.clientX; vel = 0;
+    scene.classList.add('grabbing');
+    try { scene.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  scene.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - lastX; lastX = e.clientX;
+    moved += Math.abs(dx);
+    angle += dx * .4; vel = dx * .4;
+  });
+  ['pointerup', 'pointercancel'].forEach(ev =>
+    scene.addEventListener(ev, () => { drag = false; scene.classList.remove('grabbing'); }));
+
+  scene.addEventListener('click', e => {
+    if (moved > 8) return;
+    const card = e.target.closest('.ring-card');
+    if (card) openLB(card.querySelector('img').src);
+  });
+
+  let front = -1;
+  (function frame() {
+    requestAnimationFrame(frame);
+    if (!inView || document.hidden) return;
+    if (!drag) {
+      vel *= .95;
+      if (Math.abs(vel) < .02) vel = 0;
+      angle += vel + .13;
+    }
+    ring.style.transform = 'translateZ(' + (-R) + 'px) rotateY(' + angle + 'deg)';
+    const fi = Math.round((((-angle % 360) + 360) % 360) / STEP) % N;
+    if (fi !== front) { front = fi; capEl.textContent = '📷 ' + GALLERY[fi].cap; }
+    for (let i = 0; i < N; i++) {
+      const c = (Math.cos((i * STEP + angle) * Math.PI / 180) + 1) / 2;
+      cards[i].style.filter = 'brightness(' + (.35 + .65 * c).toFixed(3) + ')';
+    }
+  })();
+})();
+
+// ── Events ribbon ─────────────────────────────────────────────
+(function() {
+  const wrap = $('events-ribbon');
+  EVENTS.forEach((e, i) => {
+    const c = document.createElement('div');
+    c.className = 'ev-card fade';
+    c.style.animationDelay = (i % 4) * 70 + 'ms';
+    c.innerHTML = `
+      <div class="ev-card-img">
+        <img src="${e.src}" alt="${e.title}" loading="lazy" onerror="this.src='${e.fb}'"/>
+        <span class="ev-date-pill">${e.date}</span>
+      </div>
+      <div class="ev-card-body"><h3>${e.title}</h3><p>${e.desc}</p></div>`;
+    wrap.appendChild(c);
+  });
+})();
+
+// ── Students Gallery Style ─────────────────────────
+(function() {
+  const grid = $('stu-grid');
+
+  STUDENTS.forEach((s, i) => {
+    const c = document.createElement('div');
+
+    c.className = 'stu-card fade';
+    c.style.animationDelay = (i % 4) * 70 + 'ms';
+
+    c.innerHTML = `
+      <div class="stu-cover">
+        <img src="${s.src}"
+             alt="${s.name}"
+             loading="lazy"
+             onerror="this.src='${s.fb}'">
+
+        <span class="stu-badge">${s.id}</span>
+      </div>
+
+      <div class="stu-body">
+
+        <div class="stu-name">
+          ${s.name}
+        </div>
+
+        <span class="stu-role">
+          ${s.cita}
+        </span>
+
+        <p class="stu-message">
+          "${s.pesan}"
+        </p>
+
+        <div class="stu-divider"></div>
+
+        <p class="stu-kesan">
+          "${s.kesan}"
+        </p>
+
+      </div>
+    `;
+
+    grid.appendChild(c);
+  });
+})();
+
+// ── Timeline cards ────────────────────────────────────────────
+(function() {
+  const wrap = $('tl-cards');
+  TIMELINE.forEach((t, i) => {
+    const c = document.createElement('div');
+    c.className = 'tl-card fade';
+    c.style.animationDelay = (i % 4) * 90 + 'ms';
+    c.innerHTML = `
+      <div class="tl-card-img"><img src="${t.src}" alt="${t.title}" loading="lazy" onerror="this.src='${t.fb}'"/></div>
+      <div class="tl-card-body">
+        <div class="tl-year-bg">${t.year}</div>
+        <div class="tl-pill"><span class="tl-pill-dot"></span>${t.year}</div>
+        <div class="tl-title">${t.title}</div>
+        <div class="tl-desc">${t.desc}</div>
+      </div>`;
+    wrap.appendChild(c);
+  });
+})();
+
+// ── Video ─────────────────────────────────────────────────────
+$('vframe').src = VIDEO_EMBED;
+$('fyear').textContent = new Date().getFullYear();
+
+// ── Quotes ────────────────────────────────────────────────────
+(function() {
+  const el = $('quote-text'); let i = 0;
+  function show() {
+    el.style.animation = 'none'; el.offsetHeight;
+    el.style.animation = 'fadeUp .75s ease';
+    el.textContent = '"' + QUOTES[i] + '"';
+    i = (i+1) % QUOTES.length;
+  }
+  show(); setInterval(show, 6000);
+})();
+
+// ── Stats ─────────────────────────────────────────────────────
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.value, step = Math.ceil(target/55);
+      let cur = 0;
+      const t = setInterval(() => {
+        cur = Math.min(cur+step, target);
+        el.textContent = cur.toLocaleString('id-ID');
+        if (cur >= target) clearInterval(t);
+      }, 22);
+      obs.unobserve(el);
+    });
+  }, { threshold:.5 });
+  document.querySelectorAll('.bstat-val').forEach(el => obs.observe(el));
+})();
+
+// ── Scroll fade ───────────────────────────────────────────────
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold:.06, rootMargin:'40px' });
+  document.querySelectorAll('.fade,.fade-l,.fade-r').forEach(el => obs.observe(el));
+})();
+
+// ── Navbar + progress + hero parallax 3D ─────────────────────
+const heroContent = $('hero-content');
+const heroPhotos = document.querySelectorAll('.hp');
+let __tick = false;
+function onScroll3D() {
+  __tick = false;
+  $('nav').classList.toggle('scrolled', scrollY > 50);
+  const total = document.documentElement.scrollHeight - innerHeight;
+  $('prog').style.width = (scrollY / total * 100) + '%';
+  const y = scrollY;
+  if (y <= innerHeight) {
+    heroContent.style.transform = 'translate3d(0,' + (y * .26) + 'px,0) rotateX(' + Math.min(12, y * .02) + 'deg)';
+    heroContent.style.opacity = Math.max(0, 1 - y / (innerHeight * .8));
+    heroPhotos.forEach((el, i) => { el.style.translate = '0 ' + (y * (.1 + i * .06)) + 'px'; });
+  }
+}
+window.addEventListener('scroll', () => {
+  if (!__tick) { __tick = true; requestAnimationFrame(onScroll3D); }
+}, { passive:true });
+onScroll3D();
+
+// ── Bottom nav active on scroll ───────────────────────────────
+const SEC_IDS = ['cerita','galeri','siswa','timeline','tanda-tangan'];
+const BNIS = document.querySelectorAll('.bni');
+window.addEventListener('scroll', () => {
+  let cur = 0;
+  SEC_IDS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 140) cur = i;
+  });
+  BNIS.forEach((b,i) => b.classList.toggle('active', i===cur));
+}, { passive:true });
+
+function navTo(id, btn) {
+  document.querySelector(id)?.scrollIntoView({ behavior:'smooth' });
+  BNIS.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Lightbox ─────────────────────────────────────────────────
+function openLB(src) {
+  $('lb-img').src = src;
+  $('lightbox').classList.add('open');
+}
+$('lightbox').addEventListener('click', e => { if(e.target===e.currentTarget) $('lightbox').classList.remove('open'); });
+$('lb-close').addEventListener('click', () => $('lightbox').classList.remove('open'));
+
+// ── Music ─────────────────────────────────────────────────────
+(function() {
+  const audio=$('bg-audio'), btn=$('play-btn'), ind=$('music-ind');
+  const pi=$('play-icon'), pa=$('pause-icon');
+  function setPlay(p) {
+    if(p){audio.play().catch(()=>{}); ind.classList.add('playing'); pi.style.display='none'; pa.style.display='';}
+    else {audio.pause(); ind.classList.remove('playing'); pi.style.display=''; pa.style.display='none';}
+  }
+  setPlay(true);
+  document.addEventListener('touchstart', ()=>{ if(audio.paused) setPlay(true); }, {once:true});
+  btn.addEventListener('click', e=>{ e.stopPropagation(); setPlay(audio.paused); });
+})();
+
+/* ── SHARED SIGNATURE ENGINE (Firebase Firestore realtime) ── */
+let __sigUnsubscribeMobile = null;
+
+function sigRenderItem(entry) {
+  const grid=$('sigs-grid'), empty=$('sigs-empty'), count=$('sigs-count');
+  if(!grid) return;
+
+  // Prevent duplicates on fast updates
+  const existing = document.getElementById('sig-'+entry.id);
+  if(existing) return;
+
+  empty.style.display='none';
+
+  const div=document.createElement('div');
+  div.className='sig-item'; div.id='sig-'+entry.id;
+  div.innerHTML=`
+    <button class="sig-del-btn" onclick="sigDelete('${entry.id}')">✕</button>
+    <div class="sig-item-img"><img src="${entry.image}" alt="${entry.name}"/></div>
+    <div class="sig-item-name handwriting">${entry.name}</div>
+    <div class="sig-item-date">${entry.date}</div>`;
+  grid.prepend(div);
+
+  // count is updated from snapshot below
+  if(count) count.textContent = grid.children.length + ' TTD';
+}
+
+function sigRenderAll(entries) {
+  const grid=$('sigs-grid'), empty=$('sigs-empty'), count=$('sigs-count');
+  if(!grid || !empty) return;
+  grid.innerHTML = '';
+
+  if(entries.length === 0) {
+    empty.style.display='flex';
+    if(count) count.textContent = '0 TTD';
+    return;
+  }
+
+  empty.style.display='none';
+  entries.forEach(sigRenderItem);
+  if(count) count.textContent = entries.length + ' TTD';
+}
+
+// Expose delete/add for existing inline onclick and signature pad
+window.sigDelete = async function(id) {
+  try {
+    const fb = await import('./firebase-config.js');
+    const db = fb.initFirebase();
+    await fb.deleteDoc(fb.doc(db, 'ttd', String(id)));
+  } catch (e) {
+    console.error('sigDelete failed', e);
+  }
+};
+
+window.sigAdd = async function(entry) {
+  try {
+    const fb = await import('./firebase-config.js');
+    const db = fb.initFirebase();
+
+    const docId = String(entry.id);
+    const payload = {
+      id: docId,
+      nama: entry.name || '',
+      pesan: entry.date || '',
+      posisi: entry.posisi || 'center',
+      warna: entry.warna || '#D4AF37',
+      gambar: entry.image || '',
+      createdAt: fb.serverTimestamp(),
+      updatedAt: fb.serverTimestamp(),
+    };
+
+    const { setDoc, doc } = fb;
+    await setDoc(doc(db, 'ttd', docId), payload);
+  } catch (e) {
+    console.error('sigAdd failed', e);
+  }
+};
+
+(async function initMobileFirestore() {
+  try {
+    const fb = await import('./firebase-config.js');
+    const db = fb.initFirebase();
+    const ttdCol = fb.collection(db, 'ttd');
+    const q = fb.query(ttdCol, fb.orderBy('updatedAt', 'desc'));
+
+    __sigUnsubscribeMobile = fb.onSnapshot(q, (snap) => {
+      const entries = snap.docs.map(d => {
+        const data = d.data() || {};
+        return {
+          id: String(data.id ?? d.id),
+          name: data.nama ?? '',
+          date: data.pesan ?? '',
+          image: data.gambar ?? '',
+        };
+      });
+      sigRenderAll(entries);
+    });
+  } catch (e) {
+    console.error('Firestore init mobile failed:', e);
+  }
+})();
+
+// ── Signature pad ─────────────────────────────────────────────
+(function() {
+  const canvas=$('sig-canvas'), ctx=canvas.getContext('2d');
+  const nameInp=$('sig-name'), ov=$('sig-ov');
+  let drawing=false;
+
+  function setup() {
+    const r=canvas.getBoundingClientRect(), dpr=devicePixelRatio||1;
+    canvas.width=r.width*dpr; canvas.height=r.height*dpr;
+    ctx.scale(dpr,dpr); ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.strokeStyle='#D4AF37'; ctx.lineWidth=2.5;
+  }
+  setup();
+
+  const coords=e=>{ const r=canvas.getBoundingClientRect(),s=e.touches?e.touches[0]:e; return{x:s.clientX-r.left,y:s.clientY-r.top}; };
+  canvas.addEventListener('mousedown',  e=>{ drawing=true; ctx.beginPath(); const{x,y}=coords(e); ctx.moveTo(x,y); });
+  canvas.addEventListener('mousemove',  e=>{ if(!drawing)return; const{x,y}=coords(e); ctx.lineTo(x,y); ctx.stroke(); });
+  canvas.addEventListener('mouseup',    ()=>drawing=false);
+  canvas.addEventListener('mouseleave', ()=>drawing=false);
+  canvas.addEventListener('touchstart', e=>{ e.preventDefault(); drawing=true; ctx.beginPath(); const{x,y}=coords(e); ctx.moveTo(x,y); },{passive:false});
+  canvas.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!drawing)return; const{x,y}=coords(e); ctx.lineTo(x,y); ctx.stroke(); },{passive:false});
+  canvas.addEventListener('touchend',   ()=>drawing=false);
+
+  function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); ov.classList.remove('show'); }
+  $('sig-clear').addEventListener('click', clearCanvas);
+  $('sig-save').addEventListener('click', ()=>{
+    const name=nameInp.value.trim();
+    if(!name) return alert('Tulis nama dulu!');
+    const px=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    if(!Array.prototype.some.call(px,(v,i)=>i%4===3&&v>0)) return alert('Tanda tangan dulu ya!');
+    const entry={id:Date.now().toString(),name,image:canvas.toDataURL('image/png'),date:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+    sigAdd(entry); sigAddDOM(entry);
+    ov.classList.add('show');
+    nameInp.value='';
+    setTimeout(clearCanvas, 2000);
+  });
+})();
+
+// ── Load saved sigs ───────────────────────────────────────────
+sigLoad().forEach(sigAddDOM);
+
+// handwriting font for sig names
+document.querySelectorAll('.sig-item-name').forEach(el=>el.style.fontFamily="'Dancing Script',cursive");
+</script>
+</body>
+</html>
