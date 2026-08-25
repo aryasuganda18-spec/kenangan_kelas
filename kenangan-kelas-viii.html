@@ -368,6 +368,62 @@
       font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.35);
     }
     .ring-hint .sw { display:inline-block; animation:float 1.6s ease-in-out infinite; color:var(--gold); }
+    .gal-btn {
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding:.9rem 1.9rem; border-radius:99px;
+      border:1px solid rgba(212,175,55,.4); background:rgba(212,175,55,.1);
+      color:var(--gold); font-size:.9rem; font-weight:700; letter-spacing:.04em;
+      cursor:pointer; transition:transform .25s, background .25s, color .25s, box-shadow .25s;
+    }
+    .gal-btn:hover {
+      background:var(--gold); color:var(--dark);
+      transform:translateY(-2px); box-shadow:0 10px 30px rgba(212,175,55,.3);
+    }
+    .img3d { will-change:transform; }
+
+    /* =========================================
+       GALERI TAMPILAN BIASA (OVERLAY)
+    ========================================= */
+    #gallery-view {
+      position:fixed; inset:0; z-index:150; display:none;
+      background:rgba(11,19,43,.98); backdrop-filter:blur(14px);
+      overflow-y:auto; padding:1.5rem 2rem 3rem;
+    }
+    #gallery-view.open { display:block; animation:fadeIn .35s ease; }
+    .gv-head {
+      position:sticky; top:-1.5rem; z-index:5;
+      display:flex; align-items:center; justify-content:space-between; gap:1rem;
+      max-width:1200px; margin:0 auto 1.5rem; padding:1rem 0 .9rem;
+      background:rgba(11,19,43,.92); backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .gv-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; }
+    .gv-sub { font-size:.65rem; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-top:.2rem; }
+    #gv-close {
+      width:42px; height:42px; border-radius:50%; flex-shrink:0;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.08);
+      color:var(--white); font-size:1.05rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .25s, transform .25s;
+    }
+    #gv-close:hover { background:rgba(212,175,55,.3); transform:rotate(90deg); }
+    .gv-grid {
+      max-width:1200px; margin:auto;
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1rem;
+    }
+    .gv-item {
+      border-radius:1rem; overflow:hidden; position:relative; aspect-ratio:1;
+      border:1px solid rgba(255,255,255,.07); cursor:pointer; background:var(--light);
+      transition:transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .gv-item:hover { transform:translateY(-6px); border-color:rgba(212,175,55,.4); box-shadow:0 16px 40px rgba(0,0,0,.5); }
+    .gv-item img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .gv-item:hover img { transform:scale(1.08); }
+    .gv-cap {
+      position:absolute; bottom:0; left:0; right:0; padding:1.4rem .8rem .6rem;
+      font-size:.8rem; font-weight:700;
+      background:linear-gradient(to top, rgba(11,19,43,.92), transparent);
+    }
 
     /* Lightbox */
     #lightbox {
@@ -726,6 +782,20 @@
 </div>
 
 <!-- ============================================================
+     GALERI TAMPILAN BIASA (OVERLAY)
+============================================================ -->
+<div id="gallery-view">
+  <div class="gv-head">
+    <div>
+      <div class="gv-title">Galeri Kenangan</div>
+      <div class="gv-sub">Tampilan Biasa</div>
+    </div>
+    <button id="gv-close">&#10005;</button>
+  </div>
+  <div class="gv-grid" id="gv-grid"></div>
+</div>
+
+<!-- ============================================================
      NAVBAR
 ============================================================ -->
 <nav id="navbar">
@@ -810,7 +880,7 @@
       <!-- ⬇ Edit angka di data-value -->
       <div class="stat-card fade">
         <div class="stat-icon">👥</div>
-        <div class="stat-value" data-value="10">0</div>
+        <div class="stat-value" data-value="12">0</div>
         <div class="stat-label">Siswa</div>
       </div>
       <div class="stat-card fade">
@@ -867,6 +937,9 @@
     </div>
     <p class="ring-cap fade" id="ring-cap"></p>
     <p class="ring-hint fade"><span class="sw">⟵</span>&nbsp;&nbsp;geser ring untuk memutar, atau biarkan berputar sendiri&nbsp;&nbsp;<span class="sw">⟶</span></p>
+    <div style="text-align:center;margin-top:1.5rem" class="fade">
+      <button class="gal-btn" id="open-gallery">🖼️ Buka Galeri — Tampilan Biasa</button>
+    </div>
   </div>
 </section>
 
@@ -1103,6 +1176,38 @@ function imgSrc(el, src, fallback) {
   })();
 })();
 
+// ─── Galeri tampilan biasa (overlay grid) ────────────────────
+(function initGalleryView() {
+  const grid = document.getElementById('gv-grid');
+  const view = document.getElementById('gallery-view');
+
+  GALLERY.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'gv-item';
+    const img = document.createElement('img');
+    imgSrc(img, g.src, g.fallback);
+    img.alt = g.caption; img.loading = 'lazy';
+    const cap = document.createElement('div');
+    cap.className = 'gv-cap';
+    cap.textContent = '📷 ' + g.caption;
+    d.append(img, cap);
+    d.addEventListener('click', () => openLightbox(g.src, g.fallback));
+    grid.appendChild(d);
+  });
+
+  function open() {
+    view.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    view.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('open-gallery').addEventListener('click', open);
+  document.getElementById('gv-close').addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
 // ─── Render Events ───────────────────────────────────────────
 (function renderEvents() {
   const grid = document.getElementById('events-grid');
@@ -1110,7 +1215,7 @@ function imgSrc(el, src, fallback) {
     const card = document.createElement('div');
     card.className = 'event-card fade';
     card.innerHTML = `
-      <div class="event-card-img">
+      <div class="event-card-img img3d">
         <img src="${e.src}" alt="${e.title}" loading="lazy" onerror="this.src='${e.fallback}'" />
         <span class="event-date">${e.date}</span>
       </div>
@@ -1127,7 +1232,7 @@ function imgSrc(el, src, fallback) {
   const grid = document.getElementById('students-grid');
   STUDENTS.forEach(s => {
     const card = document.createElement('div');
-    card.className = 'student-card fade';
+    card.className = 'student-card';
     card.innerHTML = `
       <div class="student-glow"></div>
       <div class="student-avatar">
@@ -1161,7 +1266,7 @@ function imgSrc(el, src, fallback) {
         <p class="tl-desc">${t.desc}</p>
       </div>
       <div class="tl-dot"><div class="tl-dot-inner"></div></div>
-      <div class="tl-img fade">
+      <div class="tl-img img3d">
         <img src="${t.src}" alt="${t.title}" loading="lazy" onerror="this.src='${t.fallback}'" />
       </div>`;
     list.appendChild(item);
@@ -1226,6 +1331,31 @@ document.getElementById('year').textContent = new Date().getFullYear();
     const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     bar.style.width = (window.scrollY / total * 100) + '%';
   }, { passive: true });
+})();
+
+// ─── Tilt 3D gambar saat scroll ──────────────────────────────
+(function initImg3D() {
+  const els = Array.from(document.querySelectorAll('.img3d'));
+  if (!els.length) return;
+  let tick = false;
+  function update() {
+    tick = false;
+    const vh = window.innerHeight;
+    for (const el of els) {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -80 || r.top > vh + 80) continue;
+      const p = (r.top + r.height / 2 - vh / 2) / vh;
+      const rx = Math.max(-12, Math.min(12, p * 18));
+      const sc = 1 - Math.min(.05, Math.abs(p) * .07);
+      el.style.transform = 'perspective(750px) rotateX(' + rx.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+    }
+  }
+  function onScroll() {
+    if (!tick) { tick = true; requestAnimationFrame(update); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
 })();
 
 
