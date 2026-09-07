@@ -46,9 +46,9 @@ const EVENTS = [
     fallback: "https://picsum.photos/seed/event1/600/400",
   },
   {
-    title: "Class Meeting",
+    title: "Liburan ke pantai",
     date: "10 Des 2024",
-    desc: "Juara 1 lomba tarik tambang antar kelas! Kekompakan Kelas VIII memang tiada duanya.",
+    desc: "Bertemu bule dan mencari ikan.",
     src: "event2.jpg",
     fb: "https://picsum.photos/seed/event2/600/400",
     fallback: "https://picsum.photos/seed/event2/600/400",
